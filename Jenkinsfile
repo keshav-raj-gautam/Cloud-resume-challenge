@@ -18,7 +18,7 @@ pipeline {
 
         stage('Terraform Init & Apply') {
             steps {
-                dir("Cloud-resume-challenge/Terraform") {
+                dir("Terraform") {
                     sh """
                         terraform init
                         terraform apply --auto-approve
