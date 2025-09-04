@@ -2,10 +2,11 @@ pipeline {
     agent any
 
     environment {
-        ARM_CLIENT_ID        = credentials('ARM_CLIENT_ID')
-        ARM_CLIENT_SECRET    = credentials('ARM_CLIENT_SECRET')
-        ARM_SUBSCRIPTION_ID  = credentials('ARM_SUBSCRIPTION_ID')
-        ARM_TENANT_ID        = credentials('ARM_TENANT_ID')
+        // Azure credentials
+        ARM_CLIENT_ID       = credentials('ARM_CLIENT_ID')
+        ARM_CLIENT_SECRET   = credentials('ARM_CLIENT_SECRET')
+        ARM_SUBSCRIPTION_ID = credentials('ARM_SUBSCRIPTION_ID')
+        ARM_TENANT_ID       = credentials('ARM_TENANT_ID')
     }
 
     stages {
@@ -20,6 +21,8 @@ pipeline {
                 dir("Terraform") {
                     withCredentials([string(credentialsId: 'TERRAFORM_CLOUD_TOKEN', variable: 'TF_CLOUD_TOKEN')]) {
                         sh '''
+                            echo "Initializing Terraform Cloud with token..."
+                            export TF_CLOUD_TOKEN=$TF_CLOUD_TOKEN
                             terraform init
                             terraform apply --auto-approve
                         '''
@@ -41,7 +44,7 @@ pipeline {
                         ''',
                         returnStdout: true
                     ).trim()
-                    echo "Function URL is: ${FUNCTION_URL}"
+                    echo "Function URL: ${FUNCTION_URL}"
                 }
             }
         }
