@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Azure credentials 
+        // Azure credentials
         ARM_CLIENT_ID       = credentials('ARM_CLIENT_ID')
         ARM_CLIENT_SECRET   = credentials('ARM_CLIENT_SECRET')
         ARM_SUBSCRIPTION_ID = credentials('ARM_SUBSCRIPTION_ID')
@@ -22,7 +22,11 @@ pipeline {
                     withCredentials([string(credentialsId: 'TERRAFORM_CLOUD_TOKEN', variable: 'TF_CLOUD_TOKEN')]) {
                         sh '''
                             echo "Initializing Terraform Cloud with token..."
-                            echo "credentials \"app.terraform.io\" { token = \"$TF_CLOUD_TOKEN\" }" > $WORKSPACE/.terraformrc
+                            cat > $WORKSPACE/.terraformrc <<EOF
+credentials "app.terraform.io" {
+  token = "$TF_CLOUD_TOKEN"
+}
+EOF
                             export TF_CLI_CONFIG_FILE=$WORKSPACE/.terraformrc
                             terraform init
                             terraform apply --auto-approve
