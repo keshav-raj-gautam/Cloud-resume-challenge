@@ -12,15 +12,15 @@ variable "file_content_types" {
     "app.js"     = "application/javascript"
   }
 }
-variable "files" {
-  type = map(string)
+# variable "files" {
+#   type = map(string)
 
-  default = {
-    "index.html" = "./www/index.html"
-    "style.css"  = "./www/style.css"
-    "app.js"     = "./www/app.js"
-  }
-}
+#   default = {
+#     "index.html" = "./www/index.html"
+#     "style.css"  = "./www/style.css"
+#     "app.js"     = "./www/app.js"
+#   }
+# }
 
 # #CDN Variables
 
@@ -34,9 +34,9 @@ variable "files" {
 variable "db_account_name" {}
 variable "db_table_name" {}
 
-#Key Vault
+# #Key Vault
 
-variable "key_vault_name" {}
+# variable "key_vault_name" {}
 
 #Function
 variable "function_storage_name" {}

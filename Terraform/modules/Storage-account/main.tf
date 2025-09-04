@@ -20,12 +20,12 @@ resource "azurerm_storage_container" "container" {
 
 }
 
-resource "azurerm_storage_blob" "index" {
-  for_each = var.files
-  name = each.key
-  type = "Block"
-  storage_container_name = azurerm_storage_container.container.name
-  storage_account_name = azurerm_storage_account.storage_account.name
-  source = each.value
-content_type = lookup(var.file_content_types, each.key, "application/octet-stream")
-}
+# resource "azurerm_storage_blob" "index" {
+#   for_each = var.files
+#   name = each.key
+#   type = "Block"
+#   storage_container_name = azurerm_storage_container.container.name
+#   storage_account_name = azurerm_storage_account.storage_account.name
+#   source = each.value
+# content_type = lookup(var.file_content_types, each.key, "application/octet-stream")
+# }
