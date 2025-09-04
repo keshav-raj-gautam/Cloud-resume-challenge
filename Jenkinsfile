@@ -2,12 +2,10 @@ pipeline {
     agent any
 
     environment {
-       
-        ARM_CLIENT_ID     = credentials('ARM_CLIENT_ID')
-        ARM_CLIENT_SECRET = credentials('ARM_CLIENT_SECRET')
-        ARM_SUBSCRIPTION_ID = credentials('ARM_SUBSCRIPTION_ID')
-        ARM_TENANT_ID     = credentials('ARM_TENANT_ID')
-        TF_CLOUD_TOKEN = credentials('TERRAFORM_CLOUD_TOKEN')
+        ARM_CLIENT_ID        = credentials('ARM_CLIENT_ID')
+        ARM_CLIENT_SECRET    = credentials('ARM_CLIENT_SECRET')
+        ARM_SUBSCRIPTION_ID  = credentials('ARM_SUBSCRIPTION_ID')
+        ARM_TENANT_ID        = credentials('ARM_TENANT_ID')
     }
 
     stages {
@@ -20,13 +18,12 @@ pipeline {
         stage('Terraform Init & Apply') {
             steps {
                 dir("Terraform") {
-                    withEnv(["TF_CLOUD_TOKEN=${credentials('TERRAFORM_CLOUD_TOKEN')}"]){
-                    sh """
-                        export TF_CLOUD_TOKEN=$TF_CLOUD_TOKEN
-                        terraform init
-                        terraform apply --auto-approve
-                    """
-                }
+                    withCredentials([string(credentialsId: 'TERRAFORM_CLOUD_TOKEN', variable: 'TF_CLOUD_TOKEN')]) {
+                        sh '''
+                            terraform init
+                            terraform apply --auto-approve
+                        '''
+                    }
                 }
             }
         }
@@ -35,13 +32,13 @@ pipeline {
             steps {
                 script {
                     env.FUNCTION_URL = sh(
-                        script: """
+                        script: '''
                             az functionapp function show \
                                 --resource-group Cloud-resume \
                                 --name VisitorCounter4216 \
                                 --function-name resume-count \
                                 --query "invokeUrlTemplate" -o tsv
-                        """,
+                        ''',
                         returnStdout: true
                     ).trim()
                     echo "Function URL is: ${FUNCTION_URL}"
@@ -52,9 +49,9 @@ pipeline {
         stage('Update Frontend Code') {
             steps {
                 dir("Cloud-resume-challenge/www") {
-                    sh """
-                        sed -i 's|<FUNCTION_URL>|${FUNCTION_URL}|g' app.js
-                    """
+                    sh '''
+                        sed -i "s|<FUNCTION_URL>|${FUNCTION_URL}|g" app.js
+                    '''
                 }
             }
         }
@@ -62,12 +59,12 @@ pipeline {
         stage('Deploy Frontend to Azure Storage') {
             steps {
                 dir("Cloud-resume-challenge/frontend") {
-                    sh """
+                    sh '''
                         az storage blob upload-batch \
                             --account-name resume2450 \
                             --auth-mode login \
                             -s . -d '$web' --overwrite
-                    """
+                    '''
                 }
             }
         }
@@ -75,9 +72,9 @@ pipeline {
         stage('Deploy Function Code') {
             steps {
                 dir("Cloud-resume-challenge/function") {
-                    sh """
+                    sh '''
                         func azure functionapp publish VisitorCounter4216
-                    """
+                    '''
                 }
             }
         }
