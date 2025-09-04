@@ -7,6 +7,7 @@ pipeline {
         ARM_CLIENT_SECRET = credentials('ARM_CLIENT_SECRET')
         ARM_SUBSCRIPTION_ID = credentials('ARM_SUBSCRIPTION_ID')
         ARM_TENANT_ID     = credentials('ARM_TENANT_ID')
+        TF_CLOUD_TOKEN = credentials('TERRAFORM_CLOUD_TOKEN')
     }
 
     stages {
@@ -20,6 +21,7 @@ pipeline {
             steps {
                 dir("Terraform") {
                     sh """
+                        export TF_CLOUD_TOKEN=$TF_CLOUD_TOKEN
                         terraform init
                         terraform apply --auto-approve
                     """
