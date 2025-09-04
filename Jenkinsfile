@@ -22,7 +22,8 @@ pipeline {
                     withCredentials([string(credentialsId: 'TERRAFORM_CLOUD_TOKEN', variable: 'TF_CLOUD_TOKEN')]) {
                         sh '''
                             echo "Initializing Terraform Cloud with token..."
-                            export TF_CLOUD_TOKEN=$TF_CLOUD_TOKEN
+                            echo "credentials \"app.terraform.io\" { token = \"$TF_CLOUD_TOKEN\" }" > $WORKSPACE/.terraformrc
+                            export TF_CLI_CONFIG_FILE=$WORKSPACE/.terraformrc
                             terraform init
                             terraform apply --auto-approve
                         '''
