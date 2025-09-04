@@ -3,10 +3,10 @@ pipeline {
 
     environment {
        
-        ARM_CLIENT_ID     = credentials('AZURE_CLIENT_ID')
-        ARM_CLIENT_SECRET = credentials('AZURE_CLIENT_SECRET')
-        ARM_SUBSCRIPTION_ID = credentials('AZURE_SUBSCRIPTION_ID')
-        ARM_TENANT_ID     = credentials('AZURE_TENANT_ID')
+        ARM_CLIENT_ID     = credentials('ARM_CLIENT_ID')
+        ARM_CLIENT_SECRET = credentials('ARM_CLIENT_SECRET')
+        ARM_SUBSCRIPTION_ID = credentials('ARM_SUBSCRIPTION_ID')
+        ARM_TENANT_ID     = credentials('ARM_TENANT_ID')
     }
 
     stages {
