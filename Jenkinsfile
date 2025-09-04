@@ -20,11 +20,13 @@ pipeline {
         stage('Terraform Init & Apply') {
             steps {
                 dir("Terraform") {
+                    withEnv(["TF_CLOUD_TOKEN=${credentials('TERRAFORM_CLOUD_TOKEN')}"]){
                     sh """
                         export TF_CLOUD_TOKEN=$TF_CLOUD_TOKEN
                         terraform init
                         terraform apply --auto-approve
                     """
+                }
                 }
             }
         }
