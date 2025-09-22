@@ -103,7 +103,7 @@ EOF
 
         stage('Deploy Frontend to Azure Storage') {
             steps {
-                dir("Cloud-resume-challenge/frontend") {
+                dir("Terraform/www") {
                     sh """
                         az storage blob upload-batch \
                             --account-name resume2450 \
