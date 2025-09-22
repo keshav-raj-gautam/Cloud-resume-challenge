@@ -105,6 +105,14 @@ EOF
             steps {
                 dir("www") {
                     sh """
+            az login --service-principal \
+              -u \$ARM_CLIENT_ID \
+              -p \$ARM_CLIENT_SECRET \
+              --tenant \$ARM_TENANT_ID
+            az account set --subscription \$ARM_SUBSCRIPTION_ID
+            az account show
+        """
+                    sh """
                         az storage blob upload-batch \
                             --account-name resume2450 \
                             --auth-mode login \
