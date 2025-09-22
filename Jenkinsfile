@@ -93,7 +93,7 @@ EOF
 
         stage('Update Frontend Code') {
             steps {
-                dir("Cloud-resume-challenge/www") {
+                dir("Terraform/www") {
                     sh """
                         sed -i "s|<FUNCTION_URL>|${FUNCTION_URL}|g" app.js
                     """
@@ -114,14 +114,14 @@ EOF
             }
         }
 
-        stage('Deploy Function Code') {
-            steps {
-                dir("Cloud-resume-challenge/function") {
-                    sh """
-                        func azure functionapp publish VisitorCounter4216
-                    """
-                }
-            }
-        }
+        // stage('Deploy Function Code') {
+        //     steps {
+        //         dir("Cloud-resume-challenge/function") {
+        //             sh """
+        //                 func azure functionapp publish VisitorCounter4216
+        //             """
+        //         }
+        //     }
+        // }
     }
 }
