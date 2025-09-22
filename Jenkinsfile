@@ -55,7 +55,7 @@ EOF
                         script: """
                             az functionapp function show \
                                 --resource-group Cloud-resume \
-                                --name VisitorCounter4216 \
+                                --name resume-count \
                                 --function-name resume-count \
                                 --query "invokeUrlTemplate" -o tsv
                         """,
