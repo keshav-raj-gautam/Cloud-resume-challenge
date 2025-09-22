@@ -48,6 +48,31 @@ EOF
             }
         }
 
+        stage('Add HTTP Trigger Function') {
+            steps {
+                dir("function") {
+                    script {
+                        def funcName = 'resume-count'
+
+                        // Initialize local function if not already
+                        sh """
+                            [ -d ${funcName} ] || func init . --javascript
+                        """
+
+                        // Create HTTP trigger function if not exists
+                        sh """
+                            [ -d ${funcName} ] || func new --name ${funcName} --template "HTTP trigger" --authlevel "anonymous"
+                        """
+
+                        // Deploy function code
+                        sh """
+                            func azure functionapp publish resume-count
+                        """
+                    }
+                }
+            }
+        }
+
         stage('Get Function URL') {
             steps {
                 script {
