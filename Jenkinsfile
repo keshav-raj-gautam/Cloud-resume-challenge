@@ -93,7 +93,7 @@ EOF
 
         stage('Update Frontend Code') {
             steps {
-                dir("Terraform/www") {
+                dir("www") {
                     sh """
                         sed -i "s|<FUNCTION_URL>|${FUNCTION_URL}|g" app.js
                     """
@@ -103,7 +103,7 @@ EOF
 
         stage('Deploy Frontend to Azure Storage') {
             steps {
-                dir("Terraform/www") {
+                dir("www") {
                     sh """
                         az storage blob upload-batch \
                             --account-name resume2450 \
