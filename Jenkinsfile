@@ -66,7 +66,7 @@ EOF
 
                         // Deploy function code
                         sh """
-                            func azure functionapp publish resume-count
+                            func azure functionapp publish resume-count --javascript
                         """
                     }
                 }
