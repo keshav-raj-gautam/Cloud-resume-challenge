@@ -102,25 +102,27 @@ EOF
         }
 
         stage('Deploy Frontend to Azure Storage') {
-            steps {
-                dir("www") {
-                    sh """
-            az login --service-principal \
-              -u \$ARM_CLIENT_ID \
-              -p \$ARM_CLIENT_SECRET \
-              --tenant \$ARM_TENANT_ID
-            az account set --subscription \$ARM_SUBSCRIPTION_ID
-            az account show
-        """
-                    sh """
-                        az storage blob upload-batch \
-                            --account-name resume2450 \
-                            --auth-mode login \
-                            -s . -d '$web' --overwrite
-                    """
-                }
-            }
+    steps {
+        dir("www") {
+            sh """
+                echo "=== Azure Login ==="
+                az login --service-principal \
+                  -u $ARM_CLIENT_ID \
+                  -p $ARM_CLIENT_SECRET \
+                  --tenant $ARM_TENANT_ID
+
+                az account set --subscription $ARM_SUBSCRIPTION_ID
+                az account show
+
+                echo "=== Uploading frontend files to Azure Storage ==="
+                az storage blob upload-batch \
+                    --account-name resume2450 \
+                    --auth-mode login \
+                    -s . -d '\$web' --overwrite
+            """
         }
+    }
+}
 
         // stage('Deploy Function Code') {
         //     steps {
