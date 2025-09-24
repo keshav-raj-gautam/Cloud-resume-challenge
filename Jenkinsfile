@@ -54,17 +54,17 @@ EOF
                     script {
                         def funcName = 'resume-count'
 
-                        // Initialize local function if not already
+                        
                         sh """
                             [ -d ${funcName} ] || func init . --javascript
                         """
 
-                        // Create HTTP trigger function if not exists
+                        
                         sh """
                             [ -d ${funcName} ] || func new --name ${funcName} --template "HTTP trigger" --authlevel "anonymous"
                         """
 
-                        // Deploy function code
+                        
                         sh """
                             func azure functionapp publish resume-count --javascript
                         """
@@ -127,14 +127,36 @@ EOF
     }
 }
 
-        // stage('Deploy Function Code') {
-        //     steps {
-        //         dir("Cloud-resume-challenge/function") {
-        //             sh """
-        //                 func azure functionapp publish VisitorCounter4216
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Notify') {
+    steps {
+        script {
+            
+            def siteUrl = sh(
+                script: '''
+                    az storage account show \
+                      --name resume2450 \
+                      --resource-group Cloud-resume \
+                      --query "primaryEndpoints.web" -o tsv
+                ''',
+                returnStdout: true
+            ).trim()
+
+            
+            env.SITE_URL = siteUrl
+
+            
+            emailext (
+                subject: "Pipeline Success - Cloud Resume Project",
+                body: """<p>Hello,</p>
+                         <p>Your pipeline <b>succeeded</b></p>
+                         <p>Static Website URL: <a href="${siteUrl}">${siteUrl}</a></p>
+                         <br>
+                         <p>Regards,<br>Jenkins</p>""",
+                to: "dilagautam@gmail.com"
+            )
+        }
+    }
+}
+
     }
 }
