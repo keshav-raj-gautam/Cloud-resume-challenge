@@ -130,7 +130,6 @@ EOF
         stage('Notify') {
     steps {
         script {
-            
             def siteUrl = sh(
                 script: '''
                     az storage account show \
@@ -141,23 +140,20 @@ EOF
                 returnStdout: true
             ).trim()
 
-            
-            env.SITE_URL = siteUrl
-
-            
-            emailext (
+            emailext(
                 subject: "Pipeline Success - Cloud Resume Project",
                 body: """<p>Hello,</p>
-                         <p>Your pipeline <b>succeeded</b></p>
+                         <p>Your pipeline <b>succeeded</b> 🎉</p>
                          <p>Static Website URL: <a href="${siteUrl}">${siteUrl}</a></p>
                          <br>
                          <p>Regards,<br>Jenkins</p>""",
-                to: "dilagautam@gmail.com"
+                to: "your_email@example.com",
                 mimeType: 'text/html'
             )
         }
     }
 }
+
 
     }
 }
