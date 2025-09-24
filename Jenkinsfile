@@ -147,7 +147,7 @@ EOF
                          <p>Static Website URL: <a href="${siteUrl}">${siteUrl}</a></p>
                          <br>
                          <p>Regards,<br>Jenkins</p>""",
-                to: "your_email@example.com",
+                to: "dilagautam@gmail.com",
                 mimeType: 'text/html'
             )
         }
