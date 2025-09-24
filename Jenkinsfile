@@ -114,11 +114,7 @@ EOF
                 az account set --subscription $ARM_SUBSCRIPTION_ID
                 az account show
 
-                echo "===Adding RBAC role==="
-                az role assignment create \
-                --assignee $ARM_CLIENT_ID \
-                --role "Storage Blob Data Contributor" \
-                --scope /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/Cloud-resume/providers/Microsoft.Storage/storageAccounts/resume2450
+                
 
 
                 echo "=== Uploading frontend files to Azure Storage ==="
