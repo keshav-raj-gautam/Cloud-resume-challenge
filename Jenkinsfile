@@ -153,6 +153,7 @@ EOF
                          <br>
                          <p>Regards,<br>Jenkins</p>""",
                 to: "dilagautam@gmail.com"
+                mimeType: 'text/html'
             )
         }
     }
